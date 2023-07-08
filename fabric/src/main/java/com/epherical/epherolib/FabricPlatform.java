@@ -1,4 +1,4 @@
-package com.epherical.bozo;
+package com.epherical.epherolib;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.loader.api.FabricLoader;
@@ -6,7 +6,6 @@ import net.fabricmc.loader.api.FabricLoader;
 import java.nio.file.Path;
 
 public class FabricPlatform extends CommonPlatform<FabricPlatform> {
-
 
     @Override
     public FabricPlatform getPlatform() {
@@ -23,9 +22,14 @@ public class FabricPlatform extends CommonPlatform<FabricPlatform> {
         return FabricLoader.getInstance().getEnvironmentType() == EnvType.SERVER;
     }
 
-    /*@Override
+    @Override
+    public Path getRootConfigPath(String modID) {
+        return FabricLoader.getInstance().getConfigDir().resolve(modID);
+    }
+
+    @Override
     public Path getRootConfigPath() {
-        return FabricLoader.getInstance().getConfigDir().resolve("BOZO_ID");
-    }*/
+        return FabricLoader.getInstance().getConfigDir();
+    }
 
 }

@@ -1,4 +1,4 @@
-package com.epherical.bozo;
+package com.epherical.epherolib;
 
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.loading.FMLEnvironment;
@@ -21,6 +21,11 @@ public class ForgePlatform extends CommonPlatform<ForgePlatform> {
     @Override
     public boolean isServerEnvironment() {
         return FMLEnvironment.dist == Dist.DEDICATED_SERVER;
+    }
+
+    @Override
+    public Path getRootConfigPath(String modID) {
+        return FMLPaths.CONFIGDIR.get().resolve(modID);
     }
 
     @Override

@@ -12,7 +12,7 @@ pluginManagement {
     }
 }
 
-rootProject.name = 'FabForgeTemplate'
+rootProject.name = 'EpheroLib'
 
 include 'forge'
 include 'fabric'

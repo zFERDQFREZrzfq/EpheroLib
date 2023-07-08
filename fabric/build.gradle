@@ -27,6 +27,11 @@ configurations {
 
 sourceSets {
     main {
+        java {
+            srcDirs += [
+                    rootProject.sourceSets.main.java
+            ]
+        }
         resources {
             srcDirs += [
                     "src/main/generated",
@@ -55,6 +60,16 @@ dependencies {
 
     modImplementation "net.fabricmc:fabric-loader:${project.fabricLoaderVersion}"
     modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabricAPIVersion}"
+
+    shade("org.spongepowered:configurate-hocon:4.1.2")
+    shade("org.spongepowered:configurate-core:4.1.2")
+    shade("com.typesafe:config:1.4.2")
+    shade("io.leangen.geantyref:geantyref:1.3.14")
+    implementation("org.spongepowered:configurate-hocon:4.1.2")
+    implementation("org.spongepowered:configurate-core:4.1.2")
+    implementation("com.typesafe:config:1.4.2")
+    implementation("io.leangen.geantyref:geantyref:1.3.14")
+
 
     shade(rootProject)
     compileOnly(rootProject)
@@ -120,6 +135,9 @@ jar {
 shadowJar {
     archiveFileName = rootProject.modBaseArchiveName + "-${rootProject.minecraftVersion}-FABRIC-dev.jar"
     configurations = [project.configurations.shade]
+    relocate("org.spongepowered", "com.epherical.epherolib.libs.org.spongepowered")
+    relocate("com.typesafe", "com.epherical.epherolib.libs.com.typesafe")
+    relocate("io.leangen", "com.epherical.epherolib.libs.io.leangen")
 }
 
 task remappedShadowJar(type: RemapJarTask) {
@@ -139,6 +157,9 @@ artifacts {
 publishing {
     publications {
         mavenJava(MavenPublication) {
+            artifactId = "${modBaseArchiveName}-" + artifactId
+            version = version + "-${minecraftVersion}"
+            // add all the jars that should be included when publishing to maven
             from components.java
         }
     }

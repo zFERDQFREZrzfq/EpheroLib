@@ -1,21 +1,17 @@
-package com.epherical.bozo;
+package com.epherical.epherolib;
 
-import com.epherical.bozo.client.AModClient;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
-@Mod("bozoID")
-public class AMod {
+@Mod(ModConstants.MOD_ID)
+public class EpheroLibForge {
 
-    private static AMod mod;
+    private static EpheroLibForge mod;
 
 
-    public AMod() {
+    public EpheroLibForge() {
         mod = this;
         CommonPlatform.create(new ForgePlatform());
 
@@ -26,14 +22,13 @@ public class AMod {
     }
 
     private void clientInit(FMLClientSetupEvent event) {
-        DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> AModClient::initClient);
-        MinecraftForge.EVENT_BUS.register(new AModClient());
+        //DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> AModClient::initClient);
+        //MinecraftForge.EVENT_BUS.register(new AModClient());
     }
 
     private void commonInit(FMLCommonSetupEvent event) {
 
     }
-
 
 
 }

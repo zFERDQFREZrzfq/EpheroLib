@@ -1,7 +1,9 @@
 package com.epherical.epherolib;
 
+import com.epherical.epherolib.objects.PlayerLanguage;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.loader.api.FabricLoader;
+import net.minecraft.server.level.ServerPlayer;
 
 import java.nio.file.Path;
 
@@ -30,6 +32,11 @@ public class FabricPlatform extends CommonPlatform<FabricPlatform> {
     @Override
     public Path getRootConfigPath() {
         return FabricLoader.getInstance().getConfigDir();
+    }
+
+    @Override
+    public String getPlayerLanguage(ServerPlayer player) {
+        return ((PlayerLanguage) player).getLanguage();
     }
 
 }

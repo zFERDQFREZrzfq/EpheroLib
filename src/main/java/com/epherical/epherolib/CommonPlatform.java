@@ -1,5 +1,7 @@
 package com.epherical.epherolib;
 
+import net.minecraft.server.level.ServerPlayer;
+
 import java.nio.file.Path;
 
 /**
@@ -35,5 +37,7 @@ public abstract class CommonPlatform<T> {
      * @return A path to the config file.
      */
     public abstract Path getRootConfigPath();
+
+    public abstract String getPlayerLanguage(ServerPlayer player);
 
 }

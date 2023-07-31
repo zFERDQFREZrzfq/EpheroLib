@@ -1,22 +1,10 @@
-buildscript {
-    repositories {
-        maven { url = 'https://files.minecraftforge.net/maven' }
-        maven { url= 'https://repo.spongepowered.org/repository/maven-public/' }
-        maven { url = 'https://maven.parchmentmc.org' }
-        mavenCentral()
-        gradlePluginPortal()
-    }
-    dependencies {
-        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1+', changing: true
-        classpath 'gradle.plugin.com.github.jengelman.gradle.plugins:shadow:7.0.0'
-        classpath group: 'org.spongepowered', name: 'mixingradle', version: '0.7-SNAPSHOT'
-    }
-}
-
 plugins {
-    id 'net.minecraftforge.gradle' version '5.1.+'
+    id 'idea'
+    id 'maven-publish'
+    id 'net.minecraftforge.gradle'
+    id 'org.spongepowered.mixin'
+    id 'com.github.johnrengelman.shadow'
     id 'org.parchmentmc.librarian.forgegradle' version '1.+'
-    id 'com.github.johnrengelman.shadow' version '7.0.0'
 }
 
 apply plugin: 'org.spongepowered.mixin'
@@ -36,8 +24,8 @@ configurations {
 }
 
 mixin {
-    // put mixin sets in here
-    // and configs
+    add sourceSets.main, "epherolib.refmap.json"
+    config "epherolib.mixins.json"
 }
 
 sourceSets {
@@ -115,6 +103,7 @@ dependencies {
     minecraft "net.minecraftforge:forge:${minecraftVersion}-${forgeVersion}"
     implementation(rootProject)
     shade(rootProject)
+    shadow(rootProject)
     annotationProcessor "org.spongepowered:mixin:${mixinVersion}:processor"
 }
 
@@ -122,6 +111,9 @@ shadowJar {
     archiveClassifier = ""
     enabled = true
     configurations = [project.configurations.shade]
+    relocate("org.spongepowered.configurate", "com.epherical.epherolib.libs.org.spongepowered.configurate")
+    relocate("com.typesafe", "com.epherical.epherolib.libs.com.typesafe")
+    relocate("io.leangen", "com.epherical.epherolib.libs.io.leangen")
 }
 
 artifacts {
@@ -157,9 +149,10 @@ reobf {
 }
 
 jar.finalizedBy('reobfJar')
+shadowJar.dependsOn('reobfJar')
 
 task sourceJar(type: Jar) {
-    classifier = 'sources'
+    archiveClassifier = 'sources'
     from sourceSets.main.allSource
 }
 
@@ -170,17 +163,21 @@ publishing {
             artifactId = "${modBaseArchiveName}-" + artifactId
             version = version + "-${minecraftVersion}"
             // add all the jars that should be included when publishing to maven
-            from components.java
+            //from components.java
+            artifact shadowJar
 
             artifact sourceJar
         }
     }
 
-    // See https://docs.gradle.org/current/userguide/publishing_maven.html for information on how to set up publishing.
     repositories {
-        // Add repositories to publish to here.
-        // Notice: This block does NOT have the same function as the block in the top level.
-        // The repositories here will be used for publishing your artifact, not for
-        // retrieving dependencies.
+        maven {
+            name = "EphericalMaven"
+            url = "https://maven.epherical.com/releases"
+            credentials {
+                username = m_user
+                password = m_pass
+            }
+        }
     }
 }

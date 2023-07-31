@@ -40,8 +40,7 @@ public class ServerTranslation extends TranslatableContents {
     }
 
 
-    @Override
-    protected void decompose() {
+    protected void decomposePieces() {
         String msg = this.fallback != null ? language.getOrDefault(this.getKey(), this.fallback) : language.getOrDefault(this.getKey());
 
         try {
@@ -118,7 +117,7 @@ public class ServerTranslation extends TranslatableContents {
     }
 
     public <T> Optional<T> visit(FormattedText.StyledContentConsumer<T> styledContentConsumer, Style style) {
-        this.decompose();
+        this.decomposePieces();
         Optional<T> optional = Optional.empty();
         for (FormattedText decomposedPart : this.decomposedParts) {
             optional = decomposedPart.visit(styledContentConsumer, style);
@@ -128,7 +127,7 @@ public class ServerTranslation extends TranslatableContents {
     }
 
     public <T> Optional<T> visit(FormattedText.ContentConsumer<T> contentConsumer) {
-        this.decompose();
+        this.decomposePieces();
         Optional<T> optional = Optional.empty();
         for (FormattedText decomposedPart : this.decomposedParts) {
             optional = decomposedPart.visit(contentConsumer);

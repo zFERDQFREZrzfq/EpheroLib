@@ -22,7 +22,8 @@
     ]
   },
   "mixins": [
-    "epherolib.mixins.json"
+    "epherolib.mixins.json",
+    "epherolib-root.mixins.json"
   ],
   "depends": {
     "fabricloader": ">=0.13.3",

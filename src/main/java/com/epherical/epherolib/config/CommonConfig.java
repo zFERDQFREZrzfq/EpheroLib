@@ -42,6 +42,7 @@ public abstract class CommonConfig {
     public CommonConfig(AbstractConfigurationLoader.Builder<?,?> loaderBuilder, String configName) {
         this.loaderBuilder = loaderBuilder;
         this.configName = configName;
+        this.serializers = TypeSerializerCollection.builder();
     }
 
     public <T, V extends TypeSerializer<T>> void addSerializer(Class<T> clazz, V instance) {
@@ -81,29 +82,29 @@ public abstract class CommonConfig {
                 }
             }
         }
-        var configLoader = this.loader = this.loaderBuilder
+        this.loader = this.loaderBuilder
                 .sink(() -> new BufferedWriter(new FileWriter(file)))
                 .defaultOptions(options -> options.serializers(builder -> builder.registerAll(serializers.build())))
                 .url(path)
                 .build();
         try {
             if (createdFile) {
-                configLoader.save(generateConfig(CommentedConfigurationNode.root()));
+                this.loader.save(generateConfig(CommentedConfigurationNode.root(loader.defaultOptions())));
             }
         } catch (ConfigurateException e) {
             e.printStackTrace();
         }
         try {
             int currentConfigVersion = getConfigVersion();
-            this.rootNode = configLoader.load();
+            this.rootNode = this.loader.load();
             // Now we will parse out the config and potentially assign any values from the config to variables to be used.
             parseConfig((CommentedConfigurationNode) rootNode);
             int value = this.rootNode.node("version").getInt();
             if (value != currentConfigVersion) {
                 LOGGER.info("Upgrading professions config from {} to {}", getConfigVersion(), currentConfigVersion);
                 setConfigVersion(currentConfigVersion);
-                configLoader.save(generateConfig(CommentedConfigurationNode.root()));
-                this.rootNode = configLoader.load();
+                this.loader.save(generateConfig(CommentedConfigurationNode.root(rootNode.options())));
+                this.rootNode = this.loader.load();
                 parseConfig((CommentedConfigurationNode) rootNode);
             }
         } catch (ConfigurateException e) {

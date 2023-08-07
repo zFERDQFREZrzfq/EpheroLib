@@ -18,10 +18,9 @@ public class ServerLanguage extends Language {
         this.translations = translations;
     }
 
-
     @Override
-    public String getOrDefault(String key, String fallback) {
-        return translations.getOrDefault(key, fallback);
+    public String getOrDefault(String s) {
+        return translations.getOrDefault(s, s);
     }
 
     @Override

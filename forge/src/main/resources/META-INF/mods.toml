@@ -9,15 +9,15 @@ modId="epherolib" #mandatory
 # The version number of the mod - there's a few well known ${} variables useable here or just hardcode it
 # ${file.jarVersion} will substitute the value of the Implementation-Version as read from the mod's JAR file metadata
 # see the associated build.gradle script for how to populate this completely automatically during a build
-version="0.1.2" #mandatory ugh
-displayName="BOZOID" #mandatory
+version="1.0.0" #mandatory ugh
+displayName="EpheroLib" #mandatory
 #updateJSONURL="http://myurl.me/" #optional
 displayURL="https://discord.gg/GZjtAn3F6W" #optional
 #logoFile="croptopia-forge.png" #optional
 #credits="Thanks for this example mod goes to Java" #optional
 authors="Thonk" #optional
 description='''
-Professions that earn you configurable rewards.
+An Epherical library for maximum coding efficiency
 '''
 # A dependency - use the . to indicate dependency for a specific modid. Dependencies are optional.
 [[dependencies.epherolib]] #optional
@@ -25,11 +25,11 @@ Professions that earn you configurable rewards.
    mandatory=true #mandatory
    versionRange="[37,)" #mandatory
    ordering="NONE"
-   side="BOTH"
+   side="SERVER"
 # Here's another dependency
 [[dependencies.epherolib]]
    modId="minecraft"
    mandatory=true
-   versionRange="[1.20,)"
+   versionRange="[1.19.2,)"
    ordering="NONE"
-   side="BOTH"
+   side="SERVER"

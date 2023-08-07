@@ -26,6 +26,7 @@ import java.util.regex.Pattern;
 
 public class ServerTranslation extends TranslatableContents {
 
+    private static final Object[] NO_ARGS = new Object[0];
     private final Language language;
 
     private List<FormattedText> decomposedParts = ImmutableList.of();
@@ -34,14 +35,14 @@ public class ServerTranslation extends TranslatableContents {
     private static final FormattedText TEXT_NULL = FormattedText.of("null");
     private static final Pattern FORMAT_PATTERN = Pattern.compile("%(?:(\\d+)\\$)?([A-Za-z%]|$)");
 
-    public ServerTranslation(Language language, String key, @Nullable String fallback, Object[] args) {
-        super(key, fallback, args);
+    public ServerTranslation(Language language, String key, Object[] args) {
+        super(key, args);
         this.language = language;
     }
 
 
     protected void decomposePieces() {
-        String msg = this.fallback != null ? language.getOrDefault(this.getKey(), this.fallback) : language.getOrDefault(this.getKey());
+        String msg = language.getOrDefault(this.getKey());
 
         try {
             ImmutableList.Builder<FormattedText> builder = ImmutableList.builder();
@@ -147,37 +148,24 @@ public class ServerTranslation extends TranslatableContents {
             }
         }
 
-        return MutableComponent.create(new ServerTranslation(language, this.getKey(), this.fallback, objects));
+        return MutableComponent.create(new ServerTranslation(language, this.getKey(), objects));
     }
 
-    public boolean equals(Object object) {
-        if (this == object) {
-            return true;
-        } else {
-            if (object instanceof ServerTranslation contents) {
-                return Objects.equals(this.getKey(), contents.getKey()) && Objects.equals(this.fallback, contents.fallback) && Arrays.equals(this.getArgs(), contents.getArgs());
-            }
-            return false;
-        }
-    }
 
-    public String toString() {
-        return "Stranslation{key='" + this.getKey() + "'" + (this.fallback != null ? ", fallback='" + this.fallback + "'" : "") + ", args=" + Arrays.toString(this.getArgs()) + "}";
-    }
 
     public static MutableComponent translatable(ServerPlayer player, String key) {
-        return MutableComponent.create(new ServerTranslation(LanguageConfig.getLanguage(player), key, null, TranslatableContents.NO_ARGS));
+        return MutableComponent.create(new ServerTranslation(LanguageConfig.getLanguage(player), key, NO_ARGS));
     }
 
     public static MutableComponent translatable(ServerPlayer player, String key, Object... args) {
-        return MutableComponent.create(new ServerTranslation(LanguageConfig.getLanguage(player), key, null, args));
+        return MutableComponent.create(new ServerTranslation(LanguageConfig.getLanguage(player), key, args));
     }
 
     public static MutableComponent translatableWithFallback(ServerPlayer player, String key, @Nullable String fallback) {
-        return MutableComponent.create(new ServerTranslation(LanguageConfig.getLanguage(player), key, fallback, TranslatableContents.NO_ARGS));
+        return MutableComponent.create(new ServerTranslation(LanguageConfig.getLanguage(player), key, NO_ARGS));
     }
 
     public static MutableComponent translatableWithFallback(ServerPlayer player, String key, @Nullable String fallback, Object... args) {
-        return MutableComponent.create(new ServerTranslation(LanguageConfig.getLanguage(player), key, fallback, args));
+        return MutableComponent.create(new ServerTranslation(LanguageConfig.getLanguage(player), key, args));
     }
 }

@@ -14,7 +14,7 @@ allprojects {
     apply plugin: 'maven-publish'
     apply plugin: 'com.github.johnrengelman.shadow'
     apply plugin: 'idea'
-    version = modVersion
+    version = project.modVersion + "-" + minecraftVersion
     group = mavenGroup
 
 }
@@ -71,7 +71,7 @@ shadowJar {
     archiveClassifier = ""
     enabled = true
     configurations = [project.configurations.shade]
-    relocate("org.spongepowered.configurate", "com.epherical.epherolib.libs.org.spongepowered")
+    relocate("org.spongepowered.configurate", "com.epherical.epherolib.libs.org.spongepowered.configurate")
     relocate("com.typesafe", "com.epherical.epherolib.libs.com.typesafe")
     relocate("io.leangen", "com.epherical.epherolib.libs.io.leangen")
 }
@@ -85,7 +85,6 @@ publishing {
     publications {
         mavenJava(MavenPublication) {
             artifactId = "${modBaseArchiveName}"
-            version = version + "-${minecraftVersion}"
             // add all the jars that should be included when publishing to maven
             from (rootProject.components.java)
 

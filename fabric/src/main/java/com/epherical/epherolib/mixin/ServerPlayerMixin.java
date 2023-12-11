@@ -1,7 +1,7 @@
 package com.epherical.epherolib.mixin;
 
 import com.epherical.epherolib.objects.PlayerLanguage;
-import net.minecraft.network.protocol.game.ServerboundClientInformationPacket;
+import net.minecraft.server.level.ClientInformation;
 import net.minecraft.server.level.ServerPlayer;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
@@ -16,8 +16,8 @@ public class ServerPlayerMixin implements PlayerLanguage {
     private String language = "en_us";
 
     @Inject(method = "updateOptions", at = @At("TAIL"))
-    public void epheroLibSetLangField(ServerboundClientInformationPacket serverboundClientInformationPacket, CallbackInfo ci) {
-        this.language = serverboundClientInformationPacket.language();
+    public void epheroLibSetLangField(ClientInformation clientInformation, CallbackInfo ci) {
+        this.language = clientInformation.language();
     }
 
     @Override

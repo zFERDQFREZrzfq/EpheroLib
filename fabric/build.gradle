@@ -44,7 +44,9 @@ processResources {
 
     from(sourceSets.main.resources.srcDirs) {
         include "fabric.mod.json"
-        expand "version": version
+        expand ("version": version,
+                "minecraftVersion": minecraftVersion
+        )
     }
 }
 
@@ -131,7 +133,7 @@ shadowJar {
 task remappedShadowJar(type: RemapJarTask) {
     dependsOn tasks.shadowJar
     input = tasks.shadowJar.archiveFile
-    archiveFileName = rootProject.modBaseArchiveName + "-${rootProject.minecraftVersion}-FABRIC-${rootProject.version}.jar"
+    archiveFileName = rootProject.modBaseArchiveName + "-FABRIC-${rootProject.version}.jar"
 }
 
 tasks.assemble.dependsOn tasks.remappedShadowJar

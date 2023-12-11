@@ -1,5 +1,6 @@
 package com.epherical.epherolib;
 
+import net.minecraft.client.gui.components.ImageButton;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.loading.FMLEnvironment;

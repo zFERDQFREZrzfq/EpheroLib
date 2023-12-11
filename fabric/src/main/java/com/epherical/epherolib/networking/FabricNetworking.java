@@ -6,6 +6,7 @@ import it.unimi.dsi.fastutil.objects.Object2ObjectArrayMap;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking.PlayChannelHandler;
+import net.minecraft.network.Connection;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
@@ -54,13 +55,15 @@ public class FabricNetworking extends AbstractNetworking<ClientPlayNetworking.Pl
         classToResponseMap.put(type, new PacketWrapper<>(id, encoder, decoder, consumer));
     }
 
+    @Override
     public <T> void sendToClient(T type, ServerPlayer serverPlayer) {
         FriendlyByteBuf buf = new FriendlyByteBuf(Unpooled.buffer());
         assemblePacket(type, buf);
         ServerPlayNetworking.send(serverPlayer, modChannel, buf);
     }
 
-    public <T> void sendToServer(T type) {
+    @Override
+    public <T> void sendToServer(T type, Connection connection) {
         FriendlyByteBuf buf = new FriendlyByteBuf(Unpooled.buffer());
         assemblePacket(type, buf);
         ClientPlayNetworking.send(modChannel, buf);

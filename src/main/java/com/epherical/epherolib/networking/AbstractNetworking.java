@@ -1,5 +1,6 @@
 package com.epherical.epherolib.networking;
 
+import net.minecraft.network.Connection;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 import org.jetbrains.annotations.NotNull;
@@ -16,7 +17,7 @@ public abstract class AbstractNetworking<CLI, SER> {
 
     public abstract <T> void sendToClient(T type, ServerPlayer serverPlayer);
 
-    public abstract <T> void sendToServer(T type);
+    public abstract <T> void sendToServer(T type, Connection connection);
 
 
     public static class Context<T> {

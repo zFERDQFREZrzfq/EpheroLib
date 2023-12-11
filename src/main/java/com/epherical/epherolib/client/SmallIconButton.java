@@ -4,6 +4,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.Tooltip;
+import net.minecraft.client.gui.components.WidgetSprites;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
@@ -11,6 +12,15 @@ import org.jetbrains.annotations.Nullable;
 
 
 public class SmallIconButton extends Button {
+
+    private static final WidgetSprites BUTTONS = new WidgetSprites(
+            new ResourceLocation("epherolib", "widgets/small_button"),
+            new ResourceLocation("epherolib", "widgets/small_button_highlighted"));
+
+    private static final WidgetSprites ARROWS = new WidgetSprites(
+            new ResourceLocation("epherolib", "widgets/arrow_down"),
+            new ResourceLocation("epherolib", "widgets/arrow_up"));
+
 
     public static final ResourceLocation ELEMENTS = new ResourceLocation("epherolib", "textures/gui/elements.png");
 
@@ -30,8 +40,12 @@ public class SmallIconButton extends Button {
         RenderSystem.enableBlend();
         RenderSystem.enableDepthTest();
         int offset = this.getTextureY();
-        graphics.blit(ELEMENTS, getX(), getY(), 208, 7 + offset * 9, 9, 9);
-        graphics.blit(ELEMENTS, getX() + 2, getY() + 2, 224, 16 + icon.ordinal() * 5, 5, 5);
+        graphics.blitSprite(BUTTONS.get(this.active, this.isHoveredOrFocused()), this.getX(), this.getY(), this.getWidth(), this.getHeight());
+        if (icon == Icon.INCREMENT) {
+            graphics.blitSprite(ARROWS.disabled(), this.getX(), this.getY(), 5, 5);
+        } else {
+            graphics.blitSprite(ARROWS.enabled(), this.getX(), this.getY(), 5, 5);
+        }
         graphics.setColor(1.0F, 1.0F, 1.0F, 1.0F);
     }
 

@@ -93,6 +93,7 @@ loom {
 }
 
 tasks.processResources.dependsOn(rootProject.tasks.processResources)
+tasks.test.dependsOn(rootProject.tasks.shadowJar)
 
 def targetJavaVersion = 17
 tasks.withType(JavaCompile).configureEach {

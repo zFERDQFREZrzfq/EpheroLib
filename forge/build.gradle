@@ -108,6 +108,7 @@ dependencies {
 }
 
 shadowJar {
+    dependsOn rootProject.tasks.shadowJar
     archiveClassifier = ""
     enabled = true
     configurations = [project.configurations.shade]

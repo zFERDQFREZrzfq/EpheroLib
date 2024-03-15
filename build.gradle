@@ -91,8 +91,7 @@ publishing {
             artifact sourceJar
         }
     }
-
-    repositories {
+/*repositories {
         maven {
             name = "EphericalMaven"
             url = "https://maven.epherical.com/releases"
@@ -101,5 +100,5 @@ publishing {
                 password = m_pass
             }
         }
-    }
+    }*/
 }

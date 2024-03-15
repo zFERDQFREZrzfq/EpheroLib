@@ -119,6 +119,7 @@ jar {
 }
 
 shadowJar {
+    dependsOn rootProject.tasks.shadowJar
     setArchiveClassifier("")
     enabled = true
     archiveFileName = rootProject.modBaseArchiveName + "-${rootProject.minecraftVersion}-FABRIC-dev.jar"
